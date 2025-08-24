@@ -1,5 +1,5 @@
 from src.utils import get_location
-from open_weather_api.open_weather_api_connector import OpenWeatherApiConnector
+from src.open_weather_api.open_weather_api_connector import OpenWeatherApiConnector
 from src.constants import STR_IMPERIAL, OUTPUT_STATEMENT
 
 from src.logger import get_logger
