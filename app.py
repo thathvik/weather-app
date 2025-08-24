@@ -1,6 +1,6 @@
 from src.utils import get_location
-from src.open_weather_api_connector import OpenWeatherApiConnector
-from src.constants import OUTPUT_STATEMENT
+from open_weather_api.open_weather_api_connector import OpenWeatherApiConnector
+from src.constants import STR_IMPERIAL, OUTPUT_STATEMENT
 
 from src.logger import get_logger
 
@@ -10,7 +10,7 @@ def main() -> None:
     try:
         location_str = get_location()
         weather_api_connector = OpenWeatherApiConnector()
-        temperature = weather_api_connector.get_temperature_for_location(location_str)
+        temperature = weather_api_connector.get_temperature_for_location(location_str, STR_IMPERIAL)
         print(f"{OUTPUT_STATEMENT.format(**{'tempareture': temperature})}")
 
     except Exception as global_exception:
