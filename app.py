@@ -1,8 +1,11 @@
 from src.utils import get_location
 from src.open_weather_api.open_weather_api_connector import OpenWeatherApiConnector
-from src.constants import STR_IMPERIAL, OUTPUT_STATEMENT
+from src.constants import STR_IMPERIAL, OUTPUT_STATEMENT, LOG_LEVEL
 
-from src.logger import get_logger
+from src.logger import get_logger, setup_logging
+
+# Set's up logging structure for the program
+setup_logging(LOG_LEVEL)
 
 logger = get_logger(__name__)
 
