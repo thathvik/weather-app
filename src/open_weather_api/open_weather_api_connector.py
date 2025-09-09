@@ -3,7 +3,8 @@ import requests
 from http import HTTPStatus
 from urllib.parse import urljoin
 
-from typing import Tuple, Optional
+from typing import Tuple, Optional, SupportsFloat, Union
+
 from requests import Response
 
 from src.open_weather_api.open_api_weather_endpoint import OpenApiWeatherEndpoint
@@ -18,6 +19,7 @@ from src.logger import get_logger
 
 logger = get_logger(__name__)
 
+ConvertableToFloat = Union[int, str, float, SupportsFloat]
 
 class OpenWeatherApiConnector:
 
@@ -29,7 +31,7 @@ class OpenWeatherApiConnector:
         self.GEOCODING_ENDPOINT     = OPEN_WEATHER_API_GEOCODING_ENDPOINT
 
 
-    def get_temperature_for_location(self, location: str, units) -> float:
+    def get_temperature_for_location(self, location: str, units: str) -> float:
 
         latitude, longitude = self.get_location_coordinates(location)
         temperature = self.get_temperature(latitude, longitude, units)
@@ -130,9 +132,14 @@ class OpenWeatherApiConnector:
                 latitude = location_object[STR_LAT]
                 longitude = location_object[STR_LON]
 
-                latitude = float(latitude)
-                longitude = float(longitude)
-            
+                if isinstance(latitude, ConvertableToFloat) and isinstance(longitude, ConvertableToFloat):
+                    latitude = float(latitude)
+                    longitude = float(longitude)
+                else:
+                    msg = f"_extract_coordinates_from_api_reponse(): Received {latitude=} and {longitude=}, cannot be converted into a float."
+                    logger.error(msg)
+                    raise ValueError(msg)
+                
             else:
                 msg = f"_extract_coordinates_from_api_reponse(): '{STR_LAT}' '{STR_LON}' not present in the location object in the response. Received {location_object=}"
                 logger.error(msg)
