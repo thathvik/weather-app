@@ -26,7 +26,13 @@ class OpenApiWeatherEndpoint(Enum):
             OpenApiWeatherEndpoint.PAID_ENDPOINT: self._extract_current_temperature_from_api_reponse_v3_0
         }
 
-        method = map_weather_extraction_function.get(self)
+        if self in map_weather_extraction_function.keys():
+            method = map_weather_extraction_function[self]
+        else:
+            msg = f"extract_temperature_from_response(): Unexpected Endpoint. Expected {map_weather_extraction_function.keys()=}"
+            logger.error(msg)
+            raise ValueError(msg)
+        
         temperature = method(api_response_json)
 
         logger.debug(f"-extract_temperature_from_response(): Extracted temperature: {temperature}")

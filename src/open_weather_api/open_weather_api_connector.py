@@ -54,7 +54,7 @@ class OpenWeatherApiConnector:
         longitude: Optional[float] = None
 
         api_response_json = self._make_geocoding_api_call(location_str)
-        latitude, longitude = self._extract_coordinates_from_api_reponse(api_response_json)
+        latitude, longitude = self._extract_coordinates_from_api_response(api_response_json)
 
         return latitude, longitude
     
@@ -117,9 +117,9 @@ class OpenWeatherApiConnector:
         return response
     
     
-    def _extract_coordinates_from_api_reponse(self, api_response_json: list[dict], object_index: int = 0) -> Tuple[float, float]:
-        logger.debug(f"+_extract_coordinates_from_api_reponse()")
-        assert isinstance(api_response_json, list), f"_extract_coordinates_from_api_reponse(): Expected list recevied {type(api_response_json)}"
+    def _extract_coordinates_from_api_response(self, api_response_json: list[dict], object_index: int = 0) -> Tuple[float, float]:
+        logger.debug(f"+_extract_coordinates_from_api_response()")
+        assert isinstance(api_response_json, list), f"_extract_coordinates_from_api_response(): Expected list recevied {type(api_response_json)}"
 
         # Taking a more traditional coding (Java and C) approach for this method for validation
         latitude: Optional[float] = None
@@ -136,21 +136,21 @@ class OpenWeatherApiConnector:
                     latitude = float(latitude)
                     longitude = float(longitude)
                 else:
-                    msg = f"_extract_coordinates_from_api_reponse(): Received {latitude=} and {longitude=}, cannot be converted into a float."
+                    msg = f"_extract_coordinates_from_api_response(): Received {latitude=} and {longitude=}, cannot be converted into a float."
                     logger.error(msg)
                     raise ValueError(msg)
                 
             else:
-                msg = f"_extract_coordinates_from_api_reponse(): '{STR_LAT}' '{STR_LON}' not present in the location object in the response. Received {location_object=}"
+                msg = f"_extract_coordinates_from_api_response(): '{STR_LAT}' '{STR_LON}' not present in the location object in the response. Received {location_object=}"
                 logger.error(msg)
                 raise ValueError(msg)
             
         else:
-            msg = f"_extract_coordinates_from_api_reponse(): '{object_index}' is out of range in the geocoding api response object. Received {len(api_response_json)=}"
+            msg = f"_extract_coordinates_from_api_response(): '{object_index}' is out of range in the geocoding api response object. Received {len(api_response_json)=}"
             logger.error(msg)
             raise ValueError(msg)
         
-        logger.debug(f"-_extract_coordinates_from_api_reponse()")
+        logger.debug(f"-_extract_coordinates_from_api_response()")
         return latitude, longitude
 
 

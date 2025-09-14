@@ -14,7 +14,7 @@ def main() -> None:
         location_str = get_location()
         weather_api_connector = OpenWeatherApiConnector()
         temperature = weather_api_connector.get_temperature_for_location(location_str, STR_IMPERIAL)
-        print(f"{OUTPUT_STATEMENT.format(**{'location': location_str, 'tempareture': temperature})}")
+        print(f"{OUTPUT_STATEMENT.format(**{'location': location_str, 'temperature': temperature})}")
 
     except Exception as global_exception:
         logger.error(f"main(): Unable to show weather information. Global Exception Occured: {global_exception}")
